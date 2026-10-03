@@ -1,0 +1,7 @@
+{
+  "name": "TerraTrade - Land & Property Marketplace",
+  "description": "A full-featured land and property marketplace for discovering, buying, selling, and real-time messaging with sellers.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

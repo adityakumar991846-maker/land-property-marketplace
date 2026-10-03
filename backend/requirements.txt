@@ -1,0 +1,10 @@
+# TerraTrade Land & Property Marketplace Dependencies
+Django>=5.0,<6.0
+djangorestframework>=3.14.0
+django-cors-headers>=4.3.0
+channels>=4.0.0
+daphne>=4.0.0
+channels-redis>=4.2.0
+psycopg2-binary>=2.9.9
+dj-database-url>=2.1.0
+pillow>=10.2.0

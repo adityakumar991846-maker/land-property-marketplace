@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: terratrade_db
+    restart: always
+    environment:
+      POSTGRES_DB: terratrade
+      POSTGRES_USER: terratrade_user
+      POSTGRES_PASSWORD: terratrade_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    container_name: terratrade_redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: terratrade_backend
+    restart: always
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py seed_data &&
+             daphne -b 0.0.0.0 -p 8000 realestate_project.asgi:application"
+    volumes:
+      - ./backend:/app
+      - media_data:/app/media
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SECRET_KEY=terratrade-production-secure-key-12345
+      - DJANGO_DEBUG=False
+      - DATABASE_URL=postgres://terratrade_user:terratrade_password@db:5432/terratrade
+      - REDIS_URL=redis://redis:6379/0
+      - CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  postgres_data:
+  media_data:
